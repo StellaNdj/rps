@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandBackFist, faHand,  faHandScissors} from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import Modal from "./Modal";
 
 const Game = () => {
   // Initialize the scoreboards
@@ -11,6 +12,9 @@ const Game = () => {
   // Store computer and user choices
   const [userChoice, setUserChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
+
+  // Tracking modal state
+  const [modalOpen, setModalOpen] = useState(false);
 
   // Initialize the possible options for the game
   const options = ['Rock', 'Paper', 'Scissors'];
@@ -48,6 +52,14 @@ const Game = () => {
     )
   }
 
+  const handleOpen = () => {
+    setModalOpen(true);
+  }
+
+  const handleClose = () => {
+    setModalOpen(false);
+  }
+
   return (
     <>
       <div className="scoreboard">
@@ -57,7 +69,6 @@ const Game = () => {
       </div>
 
       <div>
-        <h3>Fight!</h3>
         <div className="display-choices">
           {userChoice !== null && (
             <div>
@@ -94,9 +105,19 @@ const Game = () => {
         </button>
       </div>
 
-      <div>
-        <button>Rules</button>
-        <button>Reset scoreboard</button>
+      <div className="rules-reset-btns">
+        <button className="rules-reset-btn" onClick={handleOpen}>Rules</button>
+        {modalOpen && (
+          <div className="modal-overlay">
+            <Modal
+              onClose={handleClose}
+              text="
+              Rock wins against scissors.
+              Scissors win against paper.
+              Paper wins against rock."/>
+          </div>
+        )}
+        <button className="rules-reset-btn">Reset scoreboard</button>
       </div>
     </>
   )
