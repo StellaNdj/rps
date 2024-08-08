@@ -1,13 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHandBackFist, faHand,  faHandScissors} from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { faHandBackFist, faHand, faHandScissors, faEraser, faBook } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
+import Scoreboard from "./Scoreboard";
+import ChoiceButton from "./ChoiceButton";
 
 const Game = () => {
   // Initialize the scoreboards
   const [userScoreBoard, setUserScoreBoard] = useState(0);
   const [computerScoreBoard, setComputerScoreBoard] = useState(0);
   const [tieScoreBoard, setTieScoreBoard] = useState(0);
+
+  // Activate animation
+  const [activeChoice, setActiveChoice] = useState(null);
 
   // Store computer and user choices
   const [userChoice, setUserChoice] = useState(null);
@@ -16,12 +21,41 @@ const Game = () => {
   // Tracking modal state
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Initialize the possible options for the game
+  // Initialize the possible game & icons options
   const options = ['Rock', 'Paper', 'Scissors'];
-  const random = Math.floor(Math.random()* 3);
+  const icons = [faHandBackFist, faHand, faHandScissors];
+
+  // Load scoreboard from the local storage
+  useEffect(() => {
+    const storedUserScore = localStorage.getItem('userScore');
+    const storedComputerScore = localStorage.getItem('computerScore');
+    const storedTieScore = localStorage.getItem('tieScore');
+
+    if(storedUserScore !== null) setUserScoreBoard(parseInt(storedUserScore, 10));
+    if(storedComputerScore !== null) setComputerScoreBoard(parseInt(storedComputerScore, 10));
+    if(storedTieScore !== null) setTieScoreBoard(parseInt(storedTieScore, 10));
+  }, [])
+
+
+  // Save scores whenever they change
+  useEffect(() => {
+    localStorage.setItem('userScore', userScoreBoard)
+  }, [userScoreBoard]);
+
+  useEffect(() => {
+    localStorage.setItem('computerScore', computerScoreBoard)
+  }, [computerScoreBoard]);
+
+  useEffect(() => {
+    localStorage.setItem('tieScore', tieScoreBoard)
+  }, [tieScoreBoard])
 
   // Determine the winner of the game
   const handlePlayerOption = (userChoice) => {
+
+    setActiveChoice(userChoice);
+    const random = Math.floor(Math.random()* 3);
+
     setUserChoice(userChoice);
     setComputerChoice(random);
 
@@ -29,8 +63,8 @@ const Game = () => {
       if(userChoice === random) {
         setTieScoreBoard(prevScore => prevScore + 1);
       } else if ((userChoice === 0 && random === 2) ||
-                  (userChoice === 1 && random === 0) ||
-                  (userChoice === 2 && random === 1)) {
+      (userChoice === 1 && random === 0) ||
+      (userChoice === 2 && random === 1)) {
         setUserScoreBoard(prevScore => prevScore + 1)
       } else {
         setComputerScoreBoard(prevScore => prevScore + 1);
@@ -38,12 +72,12 @@ const Game = () => {
 
       setUserChoice(null);
       setComputerChoice(null);
-    }, 1000)
+      setActiveChoice(null);
+    }, 2000)
 
   }
 
   const displayChoices = (choice) => {
-    const icons = [faHandBackFist, faHand, faHandScissors];
     return(
       <button
           className="display-choices-btn">
@@ -60,13 +94,22 @@ const Game = () => {
     setModalOpen(false);
   }
 
+  const handleReset = () => {
+    setUserScoreBoard(0);
+    setComputerScoreBoard(0);
+    setTieScoreBoard(0);
+
+    localStorage.setItem('userScore', 0);
+    localStorage.setItem('computerScore', 0);
+    localStorage.setItem('tieScore', 0);
+  }
+
   return (
     <>
-      <div className="scoreboard">
-        <div className="scoreboard-card">USER <span>{userScoreBoard}</span> </div>
-        <div className="scoreboard-card">COMPUTER <span>{computerScoreBoard}</span></div>
-        <div className="scoreboard-card">TIE <span>{tieScoreBoard}</span></div>
-      </div>
+      <Scoreboard
+        userScoreBoard={userScoreBoard}
+        computerScoreBoard={computerScoreBoard}
+        tieScoreBoard={tieScoreBoard}/>
 
       <div>
         <div className="display-choices">
@@ -88,25 +131,21 @@ const Game = () => {
       </div>
 
       <div>
-        <button
-          className="choices-btn"
-          onClick={() => handlePlayerOption(0)}>
-            <FontAwesomeIcon icon={faHandBackFist} size="2xl"/>
-        </button>
-        <button
-          className="choices-btn"
-          onClick={() => handlePlayerOption(1)}>
-            <FontAwesomeIcon icon={faHand} size="2xl"/>
-        </button>
-        <button
-          className="choices-btn"
-          onClick={() => handlePlayerOption(2)}>
-            <FontAwesomeIcon icon={faHandScissors} size="2xl"/>
-        </button>
+        {options.map((option, index) => (
+          <ChoiceButton
+            key={option}
+            icon={icons[index]}
+            isBouncing={activeChoice === index}
+            onClick={() => handlePlayerOption(index)}/>
+        ))}
       </div>
 
       <div className="rules-reset-btns">
-        <button className="rules-reset-btn" onClick={handleOpen}>Rules</button>
+        <button className="rules-reset-btn"
+          onClick={handleOpen}>
+            <FontAwesomeIcon icon={faBook}/>
+            Rules
+        </button>
         {modalOpen && (
           <div className="modal-overlay">
             <Modal
@@ -117,7 +156,9 @@ const Game = () => {
               Paper wins against rock."/>
           </div>
         )}
-        <button className="rules-reset-btn">Reset scoreboard</button>
+        <button className="rules-reset-btn" onClick={handleReset}>
+          <FontAwesomeIcon icon={faEraser}/>Reset scoreboard
+        </button>
       </div>
     </>
   )

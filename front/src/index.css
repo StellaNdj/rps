@@ -81,6 +81,10 @@ code {
   border-radius: 2px;
 }
 
+.rules-reset-btn > svg {
+  margin: 0 10px;
+}
+
 .modal {
   background-color: #1a2649;
   border-radius: 15px;
@@ -118,4 +122,20 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+
+.bounce {
+  animation: bounce 1s ease-in-out;
 }
