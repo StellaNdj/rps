@@ -77,6 +77,7 @@ const Game = () => {
 
   }
 
+  // Display with buttons each side choice's
   const displayChoices = (choice) => {
     return(
       <button
@@ -86,6 +87,7 @@ const Game = () => {
     )
   }
 
+  // Open & close the modal
   const handleOpen = () => {
     setModalOpen(true);
   }
@@ -94,6 +96,7 @@ const Game = () => {
     setModalOpen(false);
   }
 
+  // Clear the scoreboard
   const handleReset = () => {
     setUserScoreBoard(0);
     setComputerScoreBoard(0);
