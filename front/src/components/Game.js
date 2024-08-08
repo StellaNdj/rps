@@ -18,7 +18,7 @@ const Game = () => {
   const [finalMsg, setFinalMsg] = useState('');
 
   // Initialize sounds
-  const [playClick] = useSound(clickSound, { volume: 0.1 });
+  // const [playClick] = useSound(clickSound, { volume: 0.1 });
   const [playSuccess] = useSound(successSound, { volume: 0.1 });
   const [playFailure] = useSound(failureSound, { volume: 0.1 });
 
@@ -65,8 +65,6 @@ const Game = () => {
 
   // Determine the winner of the game
   const handlePlayerOption = (userChoice) => {
-    playClick();
-
     setActiveChoice(userChoice);
     const random = Math.floor(Math.random()* 3);
 
