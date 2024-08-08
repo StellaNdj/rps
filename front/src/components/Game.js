@@ -78,10 +78,10 @@ const Game = () => {
     (userChoice === 1 && random === 0) ||
     (userChoice === 2 && random === 1)) {
       setUserScoreBoard(prevScore => prevScore + 1);
-      setFinalMsg(`YOU'VE WON!`)
+      setFinalMsg(`YOU'VE WON! 👑`)
     } else {
       setComputerScoreBoard(prevScore => prevScore + 1);
-      setFinalMsg(`YOU'VE LOST :(`)
+      setFinalMsg(`YOU'VE LOST 😟`)
     }
 
     setTimeout(() => {
@@ -104,9 +104,9 @@ const Game = () => {
 
   // Display final state of the game
   const finalState = (finalMsg) => {
-    if (finalMsg === `YOU'VE WON!`) {
+    if (finalMsg === `YOU'VE WON! 👑`) {
       playSuccess();
-    } else if (finalMsg === `YOU'VE LOST :(`) {
+    } else if (finalMsg === `YOU'VE LOST 😟`) {
       playFailure();
     }
 

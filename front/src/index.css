@@ -153,9 +153,14 @@ code {
 }
 
 .finalMsg {
-  height: 30px;
+  height: auto;
   width: auto;
   padding: 10px;
   border: none;
   border-radius: 2px;
+  box-shadow: 4px 4px black;
+  font-weight: bold;
+  background-color: white;
+  color: #3ba372;
+  border: 1px solid black;
 }
