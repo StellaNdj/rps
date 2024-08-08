@@ -70,6 +70,7 @@ code {
 .display-choices {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .rules-reset-btns {
@@ -149,4 +150,12 @@ code {
 
 .bounce {
   animation: bounce 1s ease-in-out;
+}
+
+.finalMsg {
+  height: 30px;
+  width: auto;
+  padding: 10px;
+  border: none;
+  border-radius: 2px;
 }

@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import Scoreboard from "./Scoreboard";
 import ChoiceButton from "./ChoiceButton";
+import useSound from 'use-sound';
+import clickSound from '../sounds/Clicked.wav';
+import successSound from '../sounds/Success.wav';
+import failureSound from '../sounds/Failure.wav';
 
 const Game = () => {
   // Initialize the scoreboards
@@ -11,8 +15,17 @@ const Game = () => {
   const [computerScoreBoard, setComputerScoreBoard] = useState(0);
   const [tieScoreBoard, setTieScoreBoard] = useState(0);
 
+  const [finalMsg, setFinalMsg] = useState('');
+
+  // Initialize sounds
+  const [playClick] = useSound(clickSound, { volume: 0.1 });
+  const [playSuccess] = useSound(successSound, { volume: 0.1 });
+  const [playFailure] = useSound(failureSound, { volume: 0.1 });
+
   // Activate animation
   const [activeChoice, setActiveChoice] = useState(null);
+
+
 
   // Store computer and user choices
   const [userChoice, setUserChoice] = useState(null);
@@ -52,6 +65,7 @@ const Game = () => {
 
   // Determine the winner of the game
   const handlePlayerOption = (userChoice) => {
+    playClick();
 
     setActiveChoice(userChoice);
     const random = Math.floor(Math.random()* 3);
@@ -59,22 +73,25 @@ const Game = () => {
     setUserChoice(userChoice);
     setComputerChoice(random);
 
-    setTimeout(() => {
-      if(userChoice === random) {
-        setTieScoreBoard(prevScore => prevScore + 1);
-      } else if ((userChoice === 0 && random === 2) ||
-      (userChoice === 1 && random === 0) ||
-      (userChoice === 2 && random === 1)) {
-        setUserScoreBoard(prevScore => prevScore + 1)
-      } else {
-        setComputerScoreBoard(prevScore => prevScore + 1);
-      }
+    if(userChoice === random) {
+      setTieScoreBoard(prevScore => prevScore + 1);
+      setFinalMsg(`IT'S A TIE`)
+    } else if ((userChoice === 0 && random === 2) ||
+    (userChoice === 1 && random === 0) ||
+    (userChoice === 2 && random === 1)) {
+      setUserScoreBoard(prevScore => prevScore + 1);
+      setFinalMsg(`YOU'VE WON!`)
+    } else {
+      setComputerScoreBoard(prevScore => prevScore + 1);
+      setFinalMsg(`YOU'VE LOST :(`)
+    }
 
+    setTimeout(() => {
       setUserChoice(null);
       setComputerChoice(null);
       setActiveChoice(null);
-    }, 2000)
-
+      setFinalMsg('');
+    }, 2000);
   }
 
   // Display with buttons each side choice's
@@ -83,6 +100,21 @@ const Game = () => {
       <button
           className="display-choices-btn">
             <FontAwesomeIcon icon={icons[choice]} size="2xl"/>
+      </button>
+    )
+  }
+
+  // Display final state of the game
+  const finalState = (finalMsg) => {
+    if (finalMsg === `YOU'VE WON!`) {
+      playSuccess();
+    } else if (finalMsg === `YOU'VE LOST :(`) {
+      playFailure();
+    }
+
+    return (
+      <button className="finalMsg">
+        {finalMsg}
       </button>
     )
   }
@@ -121,6 +153,12 @@ const Game = () => {
               <p>You've picked</p>
               {displayChoices(userChoice)}
             </div>
+          )}
+
+          {finalMsg !== '' && (
+            <>
+            {finalState(finalMsg)}
+            </>
           )}
 
           {computerChoice !== null && (
