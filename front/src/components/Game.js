@@ -170,7 +170,7 @@ const Game = () => {
         computerScoreBoard={computerScoreBoard}
         tieScoreBoard={tieScoreBoard}/>
 
-      <div>
+      <div className="game">
         <div className="display-choices">
           {userChoice !== null && (
             <div>

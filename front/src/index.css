@@ -62,7 +62,7 @@ code {
   padding: 40px;
   border: 10px solid #1a2649;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin: 10px;
+  margin: 10px 10px 20px 10px;
 }
 
 .display-choices-btn > svg {
@@ -83,6 +83,13 @@ code {
 .computer {
   border: 10px solid goldenrod;
   box-shadow: 7px 0px 0px #ab781cf7;
+}
+
+/* Game screen */
+
+.game {
+  padding: 10px;
+  margin: 10px
 }
 
 /* Side picked */
