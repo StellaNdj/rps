@@ -21,8 +21,7 @@ const Game = () => {
   const [playFailure] = useSound(failureSound, { volume: 0.1 });
 
   // Activate animation
-  const [activeChoice, setActiveChoice] = useState(null);
-
+  const [activeChoice, setActiveChoice] = useState(false);
 
   // Store computer and user choices
   const [userChoice, setUserChoice] = useState(null);
@@ -202,6 +201,7 @@ const Game = () => {
             key={option}
             icon={icons[index]}
             isBouncing={activeChoice === index}
+            disabled={activeChoice}
             onClick={() => handlePlayerOption(index)}/>
         ))}
       </div>

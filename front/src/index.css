@@ -78,6 +78,7 @@ code {
   position: fixed;
   bottom: 0;
   right: 0;
+  margin-top: 10px;
 }
 
 .rules-reset-btn {
