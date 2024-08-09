@@ -10,16 +10,20 @@
 }
 
 .modal-cl-btn {
-  padding: 10px;
+  padding: 5px;
   border-radius: 50%;
   color: white;
   background-color: #1a2649;
   border: 2px solid white;
+  height: 30px;
+  width: 30px;
+  font-weight: bold;
 }
 
 .modal-cl-btn:hover {
   cursor: pointer;
-  font-weight: bold;
+  background-color: rgb(226, 94, 54);
+  border: 2px solid rgb(226, 94, 54);
 }
 
 .modal-overlay {
