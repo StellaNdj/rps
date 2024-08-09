@@ -114,10 +114,10 @@ const Game = () => {
   }, [])
 
   // Display with buttons each side choice's
-  const displayChoices = (choice) => {
+  const displayChoices = (choice, side) => {
     return(
       <button
-          className="display-choices-btn"
+          className={`display-choices-btn ${side}`}
           aria-label={`Choice: ${options[choice]}`}>
             <FontAwesomeIcon icon={icons[choice]} size="2xl"/>
       </button>
@@ -174,8 +174,10 @@ const Game = () => {
         <div className="display-choices">
           {userChoice !== null && (
             <div>
-              <p aria-live="polite">You've picked {options[userChoice]}</p>
-              {displayChoices(userChoice)}
+              <p aria-live="polite" className="side-p">Your pick
+                <span className="side">{options[userChoice]}</span>
+              </p>
+              {displayChoices(userChoice, 'user')}
             </div>
           )}
 
@@ -187,8 +189,10 @@ const Game = () => {
 
           {computerChoice !== null && (
             <div>
-            <p aria-live='polite'>Computer picked {options[computerChoice]}</p>
-            {displayChoices(computerChoice)}
+            <p aria-live='polite' className="side-p">Computer pick
+              <span className="side">{options[computerChoice]}</span>
+            </p>
+            {displayChoices(computerChoice, 'computer')}
             </div>
           )}
         </div>
