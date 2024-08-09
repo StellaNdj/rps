@@ -170,7 +170,7 @@ const Game = () => {
 
           {computerChoice !== null && (
             <div>
-            <p aria-live='polite' className="side-p">Computer pick
+            <p aria-live='polite' className="side-p">Com pick
               <span className="side">{options[computerChoice]}</span>
             </p>
             {displayChoices(computerChoice, 'computer')}
