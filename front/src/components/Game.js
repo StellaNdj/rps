@@ -7,6 +7,8 @@ import ChoiceButton from "./ChoiceButton";
 import useSound from 'use-sound';
 import successSound from '../sounds/Success.wav';
 import failureSound from '../sounds/Failure.wav';
+import useKeyboardNavigation from "../hooks/useKeyboardNavigation";
+import determineOutcome from "../hooks/gameLogic";
 
 const Game = () => {
   // Initialize the scoreboards
@@ -14,13 +16,14 @@ const Game = () => {
   const [computerScoreBoard, setComputerScoreBoard] = useState(0);
   const [tieScoreBoard, setTieScoreBoard] = useState(0);
 
+  // Determine final message based off the game outcome
   const [finalMsg, setFinalMsg] = useState('');
 
   // Initialize sounds
   const [playSuccess] = useSound(successSound, { volume: 0.1 });
   const [playFailure] = useSound(failureSound, { volume: 0.1 });
 
-  // Activate animation
+  // Active choice for animation
   const [activeChoice, setActiveChoice] = useState(false);
 
   // Store computer and user choices
@@ -59,6 +62,7 @@ const Game = () => {
     localStorage.setItem('tieScore', tieScoreBoard)
   }, [tieScoreBoard])
 
+
   // Determine the winner of the game
   const handlePlayerOption = (userChoice) => {
     setActiveChoice(userChoice);
@@ -67,18 +71,17 @@ const Game = () => {
     setUserChoice(userChoice);
     setComputerChoice(random);
 
-    if(userChoice === random) {
+    const { result, message } = determineOutcome(userChoice, random) ;
+
+    if (result === 'tie') {
       setTieScoreBoard(prevScore => prevScore + 1);
-      setFinalMsg(`IT'S A TIE`)
-    } else if ((userChoice === 0 && random === 2) ||
-    (userChoice === 1 && random === 0) ||
-    (userChoice === 2 && random === 1)) {
+    } else if (result === 'win') {
       setUserScoreBoard(prevScore => prevScore + 1);
-      setFinalMsg(`YOU'VE WON! 👑`)
     } else {
       setComputerScoreBoard(prevScore => prevScore + 1);
-      setFinalMsg(`YOU'VE LOST 😟`)
     }
+
+    setFinalMsg(message);
 
     setTimeout(() => {
       setUserChoice(null);
@@ -88,37 +91,12 @@ const Game = () => {
     }, 2000);
   }
 
-  // Keyboard game navigation
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'a' || e.key === 'A') {
-      handlePlayerOption(0);
-    } else if (e.key === 'z' || e.key === 'Z') {
-      handlePlayerOption(1);
-    } else if (e.key === 'e' || e.key === 'E') {
-      handlePlayerOption(2);
-    } else if (e.key === 'r' || e.key === 'R') {
-      handleReset();
-    } else if (e.key === 'o' || e.key === '0') {
-      handleOpen();
-    } else if (e.key === 'c' || e.key === 'C') {
-      handleClose();
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [])
-
   // Display with buttons each side choice's
   const displayChoices = (choice, side) => {
     return(
       <button
-          className={`display-choices-btn ${side}`}
-          aria-label={`Choice: ${options[choice]}`}>
+      className={`display-choices-btn ${side}`}
+      aria-label={`Choice: ${options[choice]}`}>
             <FontAwesomeIcon icon={icons[choice]} size="2xl"/>
       </button>
     )
@@ -134,10 +112,10 @@ const Game = () => {
 
     return (
       <button
-        className="finalMsg"
-        role="alert"
-        aria-live="assertive"
-        aria-atomic="true">
+      className="finalMsg"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true">
         {finalMsg}
       </button>
     )
@@ -162,6 +140,9 @@ const Game = () => {
     localStorage.setItem('computerScore', 0);
     localStorage.setItem('tieScore', 0);
   }
+
+  // Keyboard game navigation
+  useKeyboardNavigation(handlePlayerOption, handleReset, handleOpen, handleClose);
 
   return (
     <>
@@ -216,7 +197,7 @@ const Game = () => {
           onClick={handleOpen}
           aria-label="View rules">
             <FontAwesomeIcon icon={faBook}/>
-            Rules
+            <span>Rules</span>
         </button>
         {modalOpen && (
           <div className="modal-overlay">
@@ -231,7 +212,8 @@ const Game = () => {
         <button className="rules-reset-btn"
            onClick={handleReset}
            aria-label="Reset scoreboard">
-          <FontAwesomeIcon icon={faEraser}/>Reset scoreboard
+          <FontAwesomeIcon icon={faEraser}/>
+          <span>Reset scoreboard</span>
         </button>
       </div>
     </>

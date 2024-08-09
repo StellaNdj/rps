@@ -1,0 +1,35 @@
+/* Rules & resets buttons  */
+.rules-reset-btns {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-top: 10px;
+}
+
+.rules-reset-btn {
+  background-color: #1a4933;
+  border: 1px solid rgb(165, 165, 165);
+  padding: 10px;
+  margin: 10px;
+  color: white;
+  border-radius: 2px;
+}
+
+.rules-reset-btn:hover {
+  cursor: pointer;
+}
+
+.rules-reset-btn > svg {
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 550px) {
+  .rules-reset-btn > span {
+    display: none;
+  }
+
+  .rules-reset-btn > svg {
+    margin-right: 0;
+  }
+}

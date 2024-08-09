@@ -1,0 +1,24 @@
+/* Scoreboard */
+.scoreboard {
+  display: inline-flex;
+  justify-content: center;
+  border: 2px solid rgb(173, 173, 173);
+  border-radius: 2px;
+}
+
+.scoreboard-card {
+  display: grid;
+  background-color: white;
+  color: #3ba372;
+  padding: 20px;
+  border-radius: 2px;
+  margin: 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.scoreboard-card > span {
+  color:#1a4933;
+  font-weight: bold;
+  font-size: 25px;
+}

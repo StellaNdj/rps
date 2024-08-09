@@ -1,0 +1,28 @@
+/* Display choices buttons */
+.display-choices-btn {
+  border-radius: 50%;
+  padding: 40px;
+  border: 10px solid #1a2649;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 10px 10px 20px 10px;
+}
+
+.display-choices-btn > svg {
+  color: #1a4933;
+}
+
+.display-choices {
+  display: flex;
+  justify-content: center;
+  align-items: last baseline;
+}
+
+.user {
+  border: 10px solid rgb(141, 34, 34);
+  box-shadow: 7px 0px 0px #7c0505b8
+}
+
+.computer {
+  border: 10px solid goldenrod;
+  box-shadow: 7px 0px 0px #ab781cf7;
+}

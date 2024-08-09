@@ -1,0 +1,16 @@
+/* Choice buttons */
+.choices-btn {
+  border-radius: 50%;
+  padding: 15px;
+  border: 5px solid #1a2649;
+  box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.8);
+  margin: 10px;
+}
+
+.choices-btn:hover {
+  cursor: pointer;
+}
+
+.choices-btn > svg {
+  color: #1a4933;
+}
