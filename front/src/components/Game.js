@@ -5,7 +5,6 @@ import Modal from "./Modal";
 import Scoreboard from "./Scoreboard";
 import ChoiceButton from "./ChoiceButton";
 import useSound from 'use-sound';
-import clickSound from '../sounds/Clicked.wav';
 import successSound from '../sounds/Success.wav';
 import failureSound from '../sounds/Failure.wav';
 
@@ -18,13 +17,11 @@ const Game = () => {
   const [finalMsg, setFinalMsg] = useState('');
 
   // Initialize sounds
-  // const [playClick] = useSound(clickSound, { volume: 0.1 });
   const [playSuccess] = useSound(successSound, { volume: 0.1 });
   const [playFailure] = useSound(failureSound, { volume: 0.1 });
 
   // Activate animation
   const [activeChoice, setActiveChoice] = useState(null);
-
 
 
   // Store computer and user choices
@@ -92,11 +89,37 @@ const Game = () => {
     }, 2000);
   }
 
+  // Keyboard game navigation
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'a' || e.key === 'A') {
+      handlePlayerOption(0);
+    } else if (e.key === 'z' || e.key === 'Z') {
+      handlePlayerOption(1);
+    } else if (e.key === 'e' || e.key === 'E') {
+      handlePlayerOption(2);
+    } else if (e.key === 'r' || e.key === 'R') {
+      handleReset();
+    } else if (e.key === 'o' || e.key === '0') {
+      handleOpen();
+    } else if (e.key === 'c' || e.key === 'C') {
+      handleClose();
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [])
+
   // Display with buttons each side choice's
   const displayChoices = (choice) => {
     return(
       <button
-          className="display-choices-btn">
+          className="display-choices-btn"
+          aria-label={`Choice: ${options[choice]}`}>
             <FontAwesomeIcon icon={icons[choice]} size="2xl"/>
       </button>
     )
@@ -111,7 +134,11 @@ const Game = () => {
     }
 
     return (
-      <button className="finalMsg">
+      <button
+        className="finalMsg"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true">
         {finalMsg}
       </button>
     )
@@ -148,7 +175,7 @@ const Game = () => {
         <div className="display-choices">
           {userChoice !== null && (
             <div>
-              <p>You've picked</p>
+              <p aria-live="polite">You've picked {options[userChoice]}</p>
               {displayChoices(userChoice)}
             </div>
           )}
@@ -161,7 +188,7 @@ const Game = () => {
 
           {computerChoice !== null && (
             <div>
-            <p>Computer picked</p>
+            <p aria-live='polite'>Computer picked {options[computerChoice]}</p>
             {displayChoices(computerChoice)}
             </div>
           )}
@@ -180,8 +207,10 @@ const Game = () => {
       </div>
 
       <div className="rules-reset-btns">
-        <button className="rules-reset-btn"
-          onClick={handleOpen}>
+        <button
+          className="rules-reset-btn"
+          onClick={handleOpen}
+          aria-label="View rules">
             <FontAwesomeIcon icon={faBook}/>
             Rules
         </button>
@@ -195,7 +224,9 @@ const Game = () => {
               Paper wins against rock."/>
           </div>
         )}
-        <button className="rules-reset-btn" onClick={handleReset}>
+        <button className="rules-reset-btn"
+           onClick={handleReset}
+           aria-label="Reset scoreboard">
           <FontAwesomeIcon icon={faEraser}/>Reset scoreboard
         </button>
       </div>

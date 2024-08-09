@@ -164,3 +164,7 @@ code {
   color: #3ba372;
   border: 1px solid black;
 }
+
+.title {
+  text-shadow: 1px 3px 1px #3ba372;
+}

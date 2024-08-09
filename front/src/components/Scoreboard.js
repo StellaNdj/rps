@@ -1,4 +1,4 @@
-const Scoreboard = ({userScoreBoard, computerScoreBoard, tieScoreBoard}) => {
+const Scoreboard = ({ userScoreBoard, computerScoreBoard, tieScoreBoard }) => {
   return (
     <div className="scoreboard">
       <div className="scoreboard-card">USER <span>{userScoreBoard}</span> </div>
